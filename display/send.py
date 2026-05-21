@@ -56,6 +56,7 @@ Usage:
 """
 
 import sys
+sys.stdin.reconfigure(encoding='utf-8')
 import json
 import argparse
 import os

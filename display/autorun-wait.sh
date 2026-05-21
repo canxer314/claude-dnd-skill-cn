@@ -41,6 +41,7 @@ python3 "$PUSH" --autorun-waiting true --autorun-cycle "$INTERVAL"
 # ── Poll loop — exits when queue file appears, session changes, or 9 min pass ──
 AUTORUN=$(python3 - "$MY_SESSION" "$QFILE" "$SESSION_FILE" << 'PYEOF'
 import sys, os, time
+sys.stdout.reconfigure(encoding='utf-8')
 
 my_session, qfile, session_file = sys.argv[1], sys.argv[2], sys.argv[3]
 max_count = 1800   # 0.3s * 1800 = 9 minutes
@@ -49,7 +50,7 @@ for _ in range(max_count):
     # Queue file appeared — consume and return content
     if os.path.exists(qfile):
         try:
-            content = open(qfile).read()
+            content = open(qfile, encoding='utf-8').read()
             os.unlink(qfile)
             print(content, end='')
         except Exception:

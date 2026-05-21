@@ -311,7 +311,7 @@ def _check_auto_trigger() -> None:
         _staged.clear()
 
     try:
-        with open(QUEUE_FILE, "w") as f:
+        with open(QUEUE_FILE, "w", encoding="utf-8") as f:
             f.write(content)
     except Exception:
         char_names = []
@@ -1906,14 +1906,14 @@ def submit_now():
     if not _token_ok():
         return "Forbidden", 403
     try:
-        content = open(QUEUE_FILE).read()
+        content = open(QUEUE_FILE, encoding="utf-8").read()
         os.unlink(QUEUE_FILE)
     except FileNotFoundError:
         return "No queue", 204
     except Exception:
         return "Error", 500
     try:
-        with open(TRIGGER_FILE, "w") as f:
+        with open(TRIGGER_FILE, "w", encoding="utf-8") as f:
             f.write(content)
     except Exception:
         return "Error", 500
@@ -2008,7 +2008,7 @@ def stream():
 
     resp = Response(
         generate(),
-        mimetype="text/event-stream",
+        mimetype="text/event-stream; charset=utf-8",
         headers={
             "Cache-Control": "no-cache",
             "X-Accel-Buffering": "no",
