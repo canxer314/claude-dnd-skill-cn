@@ -401,7 +401,7 @@ SCENES: dict[str, dict] = {
             "drawbridge", "moat", "throne", "great hall", "manor",
         ],
         "colors": ["#0e0e1a", "#1a1a2e"],
-        "accent": "#8080c0",
+        "accent": "#3001c0",
         "particles": "dust",
         "label": "The Castle",
     },
@@ -2045,13 +2045,13 @@ if __name__ == "__main__":
         pass
 
     if _LAN_MODE:
-        print(f"DnD DM Display — LAN mode (0.0.0.0:5001) [{scheme.upper()}]")
-        print(f"  Local:  {scheme}://localhost:5001")
+        print(f"DnD DM Display — LAN mode (0.0.0.0:3001) [{scheme.upper()}]")
+        print(f"  Local:  {scheme}://localhost:3001")
         print("  Token stored at:", TOKEN_FILE)
         print("  POST endpoints require X-DND-Token header (send.py/push_stats.py handle this automatically)")
         print()
     else:
-        print(f"DnD DM Display — Flask server starting on {scheme}://localhost:5001")
-        print(f"Open {scheme}://localhost:5001 in your browser, then Chromecast the tab.")
+        print(f"DnD DM Display — Flask server starting on {scheme}://localhost:3001")
+        print(f"Open {scheme}://localhost:3001 in your browser, then Chromecast the tab.")
         print()
-    app.run(host=host, port=5001, threaded=True, debug=False, ssl_context=ssl_ctx)
+    app.run(host=host, port=3001, threaded=True, debug=False, ssl_context=ssl_ctx)

@@ -81,7 +81,7 @@ try:
     ctx = None
     if scheme == 'https':
         ctx = ssl.create_default_context(); ctx.check_hostname=False; ctx.verify_mode=ssl.CERT_NONE
-    req = urllib.request.Request(f'{scheme}://localhost:5001/queue/consumed', data=b'', method='POST', headers={'X-DND-Token': token})
+    req = urllib.request.Request(f'{scheme}://localhost:3001/queue/consumed', data=b'', method='POST', headers={'X-DND-Token': token})
     urllib.request.urlopen(req, timeout=1, context=ctx)
 except: pass
 " 2>/dev/null
