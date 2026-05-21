@@ -305,9 +305,10 @@ def _check_auto_trigger() -> None:
         enough          = len(_staged) >= threshold or everybody_ready
         if not (all_ready and enough):
             return
-        char_names = list(_staged.keys())
-        lines      = [f'[{c}]: {e["text"]}' for c, e in _staged.items()]
-        content    = "\n".join(lines)
+        staged_items = list(_staged.items())
+        char_names   = [c for c, _ in staged_items]
+        lines        = [f'[{c}]: {e["text"]}' for c, e in staged_items]
+        content      = "\n".join(lines)
         _staged.clear()
 
     try:
@@ -315,6 +316,20 @@ def _check_auto_trigger() -> None:
             f.write(content)
     except Exception:
         char_names = []
+
+    # Echo each staged action into the main narration feed as an action block
+    for char_name, entry in staged_items:
+        action_text = entry["text"]
+        if not action_text.strip():
+            continue
+        log_entry = {"text": action_text, "action": char_name}
+        with _text_log_lock:
+            _text_log.append(log_entry)
+        with _tail_lock:
+            _tail_buffer.append(log_entry)
+        _persist_log()
+        _persist_tail()
+        _broadcast({"text": action_text, "action": char_name})
 
     if char_names:
         with _queue_status_lock:

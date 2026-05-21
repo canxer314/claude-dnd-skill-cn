@@ -4144,7 +4144,16 @@ let _autorunThreshold = null; // null = use player count; int = explicit thresho
 _inputPanelHdr.addEventListener('click', () => {
   _inputPanel.classList.toggle('collapsed');
   _inputArrow.textContent = _inputPanel.classList.contains('collapsed') ? '▲' : '▼';
+  _adjustTextBottomPadding();
 });
+
+// ── Adjust text area bottom padding so the input panel never overlaps narration ──
+function _adjustTextBottomPadding() {
+  const panelH = _inputPanel.classList.contains('collapsed')
+    ? _inputPanel.querySelector('#input-panel-header').offsetHeight
+    : _inputPanel.offsetHeight;
+  textScroll.style.paddingBottom = Math.max(80, panelH + 30) + 'px';
+}
 
 // ── Build character tabs from stats players array ─────────────────
 function _buildCharTabs(players) {
@@ -4232,6 +4241,7 @@ function _renderStagedQueue(data) {
     if (_inputPanel.classList.contains('collapsed')) {
       _inputPanel.classList.remove('collapsed');
       _inputArrow.textContent = '▼';
+      _adjustTextBottomPadding();
     }
   } else {
     _inputBadge.style.display = 'none';
@@ -4273,6 +4283,7 @@ function _startAutorunCountdown(interval, ts) {
   if (_inputPanel && _inputPanel.classList.contains('collapsed')) {
     _inputPanel.classList.remove('collapsed');
     if (_inputArrow) _inputArrow.textContent = '▼';
+    _adjustTextBottomPadding();
   }
 
   function tick() {
@@ -4758,6 +4769,7 @@ function connect() {
   };
 }
 
+_adjustTextBottomPadding();
 connect();
 </script>
 </body>
